@@ -15,10 +15,17 @@ class Quazip5Conan(ConanFile):
     def source(self):
         self.run("git clone https://github.com/stachenov/quazip.git")
 
-    def build(self):
+    def _configure_cmake(self):
         cmake = CMake(self)
         cmake.configure(source_folder="quazip")
+        return cmake
+
+    def build(self):
+        cmake = self._configure_cmake()
         cmake.build()
+
+    def package(self):
+        cmake = self._configure_cmake()
         cmake.install()
 
     # def package(self):
