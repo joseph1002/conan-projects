@@ -12,12 +12,17 @@ class Quazip5Conan(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
 
+    source_tgz = "https://github.com/stachenov/quazip/archive/v{}.tar.gz".format(version)
+
     def source(self):
-        self.run("git clone https://github.com/stachenov/quazip.git")
+        # self.run("git clone https://github.com/stachenov/quazip.git")
+        tools.download(self.source_tgz, "quazip.tar.gz")
+        tools.unzip("quazip.tar.gz")
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="quazip")
+        # cmake.configure(source_folder="quazip")
+        cmake.configure(source_folder="quazip-{}".format(self.version))
         return cmake
 
     def build(self):

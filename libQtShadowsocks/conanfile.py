@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class LibqtshadowsocksConan(ConanFile):
     name = "libQtShadowsocks"
-    version = "v2.1.0"
+    version = "2.1.0"
     license = "MIT"
     url = "https://github.com/shadowsocks/libQtShadowsocks.git"
     description = "libQtShadowsocks conan file"
@@ -12,12 +12,17 @@ class LibqtshadowsocksConan(ConanFile):
     default_options = "shared=False"
     generators = "cmake"
 
+    source_tgz = "https://github.com/shadowsocks/libQtShadowsocks/archive/v{}.tar.gz".format(version)
+
     def source(self):
-        self.run("git clone https://github.com/shadowsocks/libQtShadowsocks.git")
+        # self.run("git clone https://github.com/shadowsocks/libQtShadowsocks.git")
+        tools.download(self.source_tgz, "libQtShadowsocks.tar.gz")
+        tools.unzip("libQtShadowsocks.tar.gz")
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="libQtShadowsocks")
+        # cmake.configure(source_folder="libQtShadowsocks")
+        cmake.configure(source_folder="libQtShadowsocks-{}".format(self.version))
         return cmake
 
     def build(self):
